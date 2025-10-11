@@ -1,14 +1,14 @@
-# ROM Checksum Fixer
+# Unified ROM Checksum Fixer
 
-Automated tool to detect and correct checksums for Mega Drive/Genesis and Super Nintendo (SNES) ROMs.
+Automatically detects and corrects checksums for Sega Genesis/Mega Drive and Super Nintendo (SNES) ROMs.
 
 ## Features
 
-- 🎮 Supports **Mega Drive/Genesis** (.bin, .md) and **SNES** (.sfc, .smc)
+- 🎮 Supports Genesis/Mega Drive (.bin, .md) and SNES (.sfc, .smc)
 - 🔍 Automatic ROM type detection
 - ⚙️ Batch processing of all ROMs in directory
 - 📝 No external dependencies (Python standard library only)
-- ✅ Complete header validation before modification
+- ✅ Validates headers before modifying
 
 ## Requirements
 
@@ -28,58 +28,55 @@ cd rom-checksum-fixer
 Place ROM files in the same directory as the script and run:
 
 ```bash
-python rom_checksum_fixer.py
+python run.py
 ```
 
-The script will:
-1. Scan all ROMs (.bin, .md, .sfc, .smc)
-2. Validate ROM type
+The script will scan the directory and automatically:
+1. Detect ROM type (Genesis or SNES)
+2. Validate ROM header
 3. Calculate correct checksum
-4. Update header if necessary
+4. Update if necessary
 
 ## Output
 
 ```
-Found 3 ROM file(s). Processing...
+Found 3 ROM file(s)
 
-  ✓ game1.bin: Genesis checksum fixed: 0x1234 → 0x5678
-  ○ game2.sfc: SNES (HiROM) checksum already correct: 0xABCD
+  ✓ game1.bin (Genesis): Fixed: 0x1234 → 0x5678
+  ○ game2.sfc (SNES): LoROM - OK (0xABCD)
   ✗ game3.rom: Unknown ROM type
 ```
 
 ### Symbols
 
-- `✓` - Checksum successfully corrected
-- `○` - Checksum was already correct
+- `✓` - Checksum corrected successfully
+- `○` - Checksum already correct
 - `✗` - Error or unknown ROM type
 
-## Support
+## ROM Support
 
 ### Genesis/Mega Drive
 
-- Detects by signature at offset 0x100
-- Validates signatures: "SEGA MEGA DRIVE" or "SEGA GENESIS"
-- Recalculates 16-bit checksum from offset 0x200
-- Writes to offset 0x18E
+- Extensions: .bin, .md
+- Detects: "SEGA MEGA DRIVE" or "SEGA GENESIS" signature
+- Calculates: 16-bit checksum from offset 0x200
+- Writes to: offset 0x18E
 
 ### SNES
 
-- Supports all mapping types: LoROM, HiROM, Ex-LoROM, Ex-HiROM
-- Preserves 512-byte copier headers
-- Calculates checksum with declared size compensation
-- Updates complement + checksum (4 bytes in header)
+- Extensions: .sfc, .smc
+- Supports: LoROM, HiROM, Ex-LoROM, Ex-HiROM
+- Detects: All valid SNES header configurations
+- Preserves: 512-byte copier headers if present
+- Calculates: 16-bit checksum with 16-bit complement
 
 ## Safety
 
-- ✅ Validates header before modifying
-- ✅ Correctly detects ROM type
-- ✅ Checks checksums only once
+- ✅ Validates ROM type before modifying
+- ✅ Compares old vs new checksum
+- ✅ Only writes if checksum differs
 - ✅ Robust error handling
 
 ## License
 
 MIT
-
-## Credits
-
-Based on original Genesis and SNES checksum validation scripts, modernized and unified.
