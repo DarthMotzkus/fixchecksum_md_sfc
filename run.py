@@ -260,10 +260,10 @@ def process_rom(rom_path: Path) -> None:
 
 
 def main():
-    """Scan directory and fix all ROM checksums."""
+    """Scan directory and subdirectories for ROM checksums."""
     current_dir = Path.cwd()
     extensions = {".bin", ".md", ".sfc", ".smc"}
-    roms = sorted([f for f in current_dir.iterdir() 
+    roms = sorted([f for f in current_dir.rglob("*") 
                    if f.is_file() and f.suffix.lower() in extensions])
     
     if not roms:

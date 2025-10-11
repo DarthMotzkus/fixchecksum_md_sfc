@@ -25,13 +25,13 @@ cd rom-checksum-fixer
 
 ## Usage
 
-Place ROM files in the same directory as the script and run:
+Place ROM files in the script directory or subdirectories and run:
 
 ```bash
 python run.py
 ```
 
-The script will scan the directory and automatically:
+The script will recursively scan the directory and all subdirectories to:
 1. Detect ROM type (Genesis or SNES)
 2. Validate ROM header
 3. Calculate correct checksum
